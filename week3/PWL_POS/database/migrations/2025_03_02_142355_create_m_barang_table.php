@@ -19,6 +19,8 @@ return new class extends Migration
             $table->unsignedBigInteger('harga_beli');
             $table->unsignedBigInteger('harga_jual');
             $table->timestamps();
+
+            $table->foreign('kategori_id')->references('kategori_id')->on('m_kategori');
         });
     }
 
