@@ -37,10 +37,12 @@ Route::prefix('category')->group(function () {
 
 // Route::get('/category/{category}', [ProductController::class, 'category']);
 
-Route::get('/user/{id}/name/{name}', [UserController::class, 'show']);
+// Route::get('/user/{id}/name/{name}', [UserController::class, 'show']);
 
 Route::get('/penjualan', [PenjualanController::class, 'index']);
 
 Route::get('/level', [LevelController::class, 'index']);
 
 Route::get('/kategori', [KategoriController::class, 'index']);
+
+Route::get('/user', [UserController::class, 'index']);
