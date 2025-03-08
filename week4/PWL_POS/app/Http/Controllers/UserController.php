@@ -30,7 +30,8 @@ class UserController extends Controller
         //     abort(404); //jika data tidak ditemukan, kembali dengan error 404
         // });
 
-        $user = UserModel::findOrFail(1); //mengambil data dari tabel m_user dengan id 1 atau error 404
+        // $user = UserModel::findOrFail(1); //mengambil data dari tabel m_user dengan id 1 atau error 404
+        $user = UserModel::where('username', 'manager9')->firstOrFail(); //mengambil data dari tabel m_user dengan username manager9 atau error 404
         return view('user', ['data' => $user]); //mengirim data ke view user
     }
 }
