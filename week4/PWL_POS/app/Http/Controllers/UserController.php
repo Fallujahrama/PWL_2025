@@ -26,7 +26,7 @@ class UserController extends Controller
         // $user = UserModel::where('level_id', 1)->first(); //mengambil data dari tabel m_user dengan level_id 1
         // $user = UserModel::firstWhere('level_id', 1); //mengambil data dari tabel m_user dengan level_id 1
 
-        $user = UserModel::findOr(1, ['username', 'nama'], function (){ //mencari data dari tabel m_user dengan id 1 atau username dan nama
+        $user = UserModel::findOr(20, ['username', 'nama'], function (){ //mencari data dari tabel m_user dengan id 1 atau username dan nama
             abort(404); //jika data tidak ditemukan, kembali dengan error 404
         });
         return view('user', ['data' => $user]); //mengirim data ke view user
