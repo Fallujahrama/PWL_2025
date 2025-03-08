@@ -10,14 +10,15 @@ class UserController extends Controller
 {
     public function index() {
         $data = [
-            // 'username' => 'customer-1',
-            // 'nama' => 'Pelanggan',
-            // 'password' => Hash::make('12345'),
-            // 'level_id' => 5
-            'nama' => 'Pelanggan Pertama', //eluqoent model
+            'level_id' => 2,
+            'username' => 'manager_dua',
+            'nama' => 'Manager 2',
+            'password' => Hash::make('12345')
+            // 'nama' => 'Pelanggan Pertama', //eluqoent model
         ];
+        UserModel::create($data); //menambahkan data ke tabel m_user
         // UserModel::insert($data); //menambahkan data ke tabel m_user
-        UserModel::where('username', 'customer-1')->update($data);
+        // UserModel::where('username', 'customer-1')->update($data);
 
         //coba akses model UserModel
         $user = UserModel::all(); //mengambil semua data dari tabel m_user
