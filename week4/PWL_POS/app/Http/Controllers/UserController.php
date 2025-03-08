@@ -33,8 +33,17 @@ class UserController extends Controller
         // $user = UserModel::findOrFail(1); //mengambil data dari tabel m_user dengan id 1 atau error 404
         // $user = UserModel::where('username', 'manager9')->firstOrFail(); //mengambil data dari tabel m_user dengan username manager9 atau error 404
 
-        $user = UserModel::where('level_id', 2)->count(); 
+        // $user = UserModel::where('level_id', 2)->count(); 
         // dd($user);
+
+        $user = UserModel::firstOrCreate(
+            [
+                'username' => 'manager22',
+                'nama' => 'Manager Dua Dua',
+                'password' => Hash::make('12345'),
+                'level_id' => 2
+            ],
+        );
         return view('user', ['data' => $user]); //mengirim data ke view user
     }
 }
