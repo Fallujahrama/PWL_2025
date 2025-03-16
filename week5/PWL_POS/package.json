@@ -7,7 +7,11 @@
     },
     "devDependencies": {
         "axios": "^1.6.4",
+        "install": "^0.13.0",
+        "laravel-datatables-vite": "^0.6.1",
         "laravel-vite-plugin": "^1.0.0",
+        "npm": "^11.2.0",
+        "sass": "^1.85.1",
         "vite": "^5.0.0"
     }
 }
