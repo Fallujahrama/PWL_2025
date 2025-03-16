@@ -392,6 +392,11 @@ return [
             'icon_color' => 'cyan',
             'url' => '#',
         ],
+        [
+            'text' => 'Kategori',
+            'url'  => 'kategori',
+            'icon' => 'fas fa-fw fa-list',
+        ],
     ],
 
     /*
