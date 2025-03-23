@@ -24,7 +24,7 @@ use App\Http\Controllers\KategoriController;
 //     return view('welcome');
 // });
 
-Route::get('/', [HomeController::class, 'home']);
+Route::get('/', [WelcomeController::class, 'index']);
 
 Route::get('/products', [ProductController::class, 'index']);
 
