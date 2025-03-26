@@ -102,9 +102,19 @@ Route::group(['prefix' => 'kategori'], function () {
     Route::post('/list', [KategoriController::class, 'list']); // menampilkan data Kategori dalam bentuk json untuk datatables
     Route::get('/create', [KategoriController::class, 'create']); // menampilkan halaman form tambah Kategori
     Route::post('/', [KategoriController::class, 'store']);  // menyimpan data Kategori baru
+
+    Route::get('/create_ajax', [KategoriController::class, 'create_ajax']); // menampilkan halaman form tambah Level dengan ajax
+    Route::post('/ajax', [KategoriController::class, 'store_ajax']); // menyimpan data user baru ajax
+
     Route::get('/{id}', [KategoriController::class, 'show']); // menampilkan detail Kategori
     Route::get('/{id}/edit', [KategoriController::class, 'edit']); // menampilkan halaman form edit Kategori
     Route::put('/{id}', [KategoriController::class, 'update']);  // menyimpan perubahan data Kategori
+
+    Route::get('/{id}/edit_ajax', [KategoriController::class, 'edit_ajax']); // menampilkan halaman form edit Level dengan ajax
+    Route::put('/{id}/update_ajax', [KategoriController::class, 'update_ajax']); // menyimpan perubahan data Level dengan ajax
+
+    Route::get('/{id}/delete_ajax', [KategoriController::class, 'confirm_ajax']); // menghapus data user dengan ajax
+    Route::delete('/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']); // menghapus data user dengan ajax
     Route::delete('/{id}', [KategoriController::class, 'destroy']); // menghapus data user
 });
 
