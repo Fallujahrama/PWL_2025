@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -10,6 +9,7 @@ use App\Http\Controllers\LevelController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,12 +32,24 @@ use App\Http\Controllers\BarangController;
 // Route::get('/penjualan', [PenjualanController::class, 'index']);
 // Route::get('/level', [LevelController::class, 'index']);
 // Route::get('/kategori', [KategoriController::class, 'index']);
-// // Route::get('/user', [UserController::class, 'index']);
+// Route::get('/user', [UserController::class, 'index']);
 // Route::get('/user/tambah', [UserController::class, 'tambah']);
 // Route::post('/user/tambah_simpan', [UserController::class, 'tambah_simpan']);
 // Route::get('/user/ubah/{id}', [UserController::class, 'ubah']);
 // Route::put('/user/ubah_simpan/{id}', [UserController::class, 'ubah_simpan']);
 // Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);
+
+// login
+Route::pattern('id', '[0-9]+'); // ketika ada parameter id, maka parameter ini harus berupa angka
+
+Route::get('login', [AuthController::class, 'login'])->name('login');
+Route::post('login', [AuthController::class, 'postLogin']);
+Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
+
+Route::middleware(['auth'])->group(function () { // artinya semua route di dalam group harus login
+
+    //masukan semua route yang perlu autentiksasi di sini
+});
 
 // welcome controller
 Route::get('/', [WelcomeController::class, 'index']);
