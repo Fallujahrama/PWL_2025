@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     public function login()
     {
-        // Jika sudah login, maka redirect ke halaman home
+        // Jika sudah login, redirect ke halaman home
         if (Auth::check()) {
             return redirect('/');
         }
@@ -18,19 +19,20 @@ class AuthController extends Controller
 
     public function postlogin(Request $request)
     {
+        // Cek jika request berbentuk AJAX atau JSON
         if ($request->ajax() || $request->wantsJson()) {
             $credentials = $request->only('username', 'password');
 
             if (Auth::attempt($credentials)) {
                 return response()->json([
-                    'status'   => true,
-                    'message'  => 'Login Berhasil',
+                    'status' => true,
+                    'message' => 'Login Berhasil',
                     'redirect' => url('/')
                 ]);
             }
 
             return response()->json([
-                'status'  => false,
+                'status' => false,
                 'message' => 'Login Gagal'
             ]);
         }
@@ -43,7 +45,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        return redirect('login');
+        return redirect('login')->with('status', 'You have been logged out.');
     }
 }

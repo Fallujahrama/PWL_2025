@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable; // implementasi class
 
-class UserModel extends Model
+class UserModel extends Authenticatable
 {
     use HasFactory;
 
     protected $table = 'm_user'; //mendefinisikan nama tabel yang digunakan model
     protected $primaryKey = 'user_id'; //mendefinisikan primary key dari tabel
 
-    protected $fillable = ['level_id', 'username', 'nama', 'password']; //mendefinisikan kolom yang akan diisi oleh user
+    protected $fillable = ['level_id', 'username', 'nama', 'password', 'created_at', 'updated_at']; //mendefinisikan kolom yang akan diisi oleh user
 
     protected $hidden = ['password']; // jangan di tampilkan saat select
 
