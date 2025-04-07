@@ -5,8 +5,9 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('barang/create') }}">Tambah</a>
-                <button onclick="modalAction('{{ url('barang/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
+                <button onclick="modalAction('{{ url('/barang/import') }}')" class="btn btn-info">Import Barang</button>
+                <a href="{{ url('/barang/create') }}" class="btn btn-primary">Tambah Data</a>
+                <button onclick="modalAction('{{ url('/barang/create_ajax') }}')" class="btn btn-success">Tambah Data (Ajax)</button>
             </div>
         </div>
         <div class="card-body">
@@ -76,38 +77,50 @@
                 columns: [{
                         data: "DT_RowIndex",
                         className: "text-center",
+                        width: "5%",
                         orderable: false,
                         searchable: false
                     }, // Kolom nomor urut
                     {
                         data: "kategori.kategori_nama",
                         className: "",
+                        width: "14%",
                         orderable: true,
                         searchable: true
                     },
                     {
                         data: "barang_kode",
                         className: "",
+                        width: "10%",
                         orderable: true,
                         searchable: true
                     },
                     {
                         data: "barang_nama",
                         className: "",
+                        width: "37%",
                         orderable: true,
                         searchable: true
                     },
                     {
                         data: "harga_beli",
                         className: "",
+                        width: "10%",
                         orderable: true,
-                        searchable: true
+                        searchable: false,
+                        render: function(data, type, row){
+                            return new Intl.NumberFormat('id-ID').format(data);
+                        }
                     },
                     {
                         data: "harga_jual",
                         className: "",
+                        width: "10%",
                         orderable: true,
-                        searchable: true
+                        searchable: false,
+                        render: function(data, type, row){
+                            return new Intl.NumberFormat('id-ID').format(data);
+                        }
                     },
                     {
                         data: "aksi",
