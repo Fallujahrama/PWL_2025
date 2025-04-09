@@ -313,6 +313,7 @@ class BarangController extends Controller
     {
       return view('barang.import');
     }
+    
     //Mengimport data barang dari file excel
     public function import_ajax(Request $request)
     {

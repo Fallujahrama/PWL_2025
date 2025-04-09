@@ -8,6 +8,7 @@ use App\Models\LevelModel;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class UserController extends Controller
 {
@@ -279,6 +280,67 @@ class UserController extends Controller
                 return response()->json([
                     'status' => false,
                     'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/');
+    }
+
+    //Menampilkan form import user
+    public function import()
+    {
+      return view('user.import');
+    }
+
+    //Mengimport data user dari file excel
+    public function import_ajax(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+          $rules = [
+            //validasi file harus xls atau xlsx max 1mb
+            'file_user' => ['required', 'mimes:xlsx', 'max:1024']
+          ];
+          $validator = Validator::make($request->all(), $rules);
+          if ($validator->fails()) {
+              return response()->json([
+                  'status' => false,
+                  'message' => 'Validasi Gagal',
+                  'msgField' => $validator->errors()
+              ]);
+          }
+            $file = $request->file('file_user'); //ambil file dari request
+            $reader = IOFactory::createReader('Xlsx'); //load reader file excel
+            $reader->setReadDataOnly(true); //hanya membaca data
+            $spreadsheet = $reader->load($file->getRealPath()); //load file excel
+            $sheet = $spreadsheet->getActiveSheet(); //ambil sheet yang aktif
+            $data = $sheet->toArray(null, false, true, true); //ambil data excet
+            $insert = [];
+            if (count($data) > 1) {
+                foreach ($data as $baris => $value) {
+                    if ($baris > 1) { // baris ke 1 adalah header
+                        $insert[] = [
+                            'user_id' => $value['A'],
+                            'username' => $value['B'],
+                            'nama' => $value['C'],
+                            'level_id' => $value['D'],
+                            // 'password' => bcrypt($value['E'] ?? 'password'), // default adalah password jika tidak ada di template
+                            'password' => bcrypt('password'), // default adalah password jika tidak ada di template
+                            'created_at' => now(),
+                        ];
+                    }
+                }
+                if (count($insert) > 0) {
+                  //insert data ke database, jika sudah ada maka diabaikan
+                    UserModel::insertOrIgnore($insert);
+                  }
+                  return response()->json([
+                      'status' => true,
+                      'message' => 'Data berhasil diimport'
+                  ]);
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Tidak ada data yang diimport'
                 ]);
             }
         }
