@@ -29,8 +29,10 @@ Route::get('/register' , [AuthController::class, 'register']);
 Route::post('/register', [AuthController::class, 'postregister']);
 
 Route::middleware(['auth'])->group(function () {
-    // welcome controller
+    
     Route::get('/', [WelcomeController::class, 'index']);
+    Route::get('/profile', [UserController::class, 'profilePage']);
+    Route::post('/user/editPhoto', [UserController::class, 'editPhoto']);
 
     // user controller
     // artinya semua route di dalam group ini harus punya role ADM (Administrator)
