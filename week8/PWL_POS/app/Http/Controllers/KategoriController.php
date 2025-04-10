@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class KategoriController extends Controller
 {
@@ -320,5 +321,61 @@ class KategoriController extends Controller
             }
         }
         return redirect('/');
+    }
+
+    //export data kategori ke excel
+    public function export_excel()
+    {
+        // Ambil data kategori yang akan diekspor
+        $kategoris = KategoriModel::select('kategori_id', 'kategori_kode', 'kategori_nama')->get();
+
+        // Load library PhpSpreadsheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet(); // Ambil sheet yang aktif
+
+        // Set header kolom
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Kategori Id');
+        $sheet->setCellValue('C1', 'Kategori Kode');
+        $sheet->setCellValue('D1', 'Kategori Nama');
+
+        // Format header bold
+        $sheet->getStyle('A1:D1')->getFont()->setBold(true);
+
+        // Isi data kategori
+        $no = 1;
+        $baris = 2;
+        foreach ($kategoris as $value) {
+            $sheet->setCellValue('A' . $baris, $no);
+            $sheet->setCellValue('B' . $baris, $value->kategori_id);
+            $sheet->setCellValue('C' . $baris, $value->kategori_kode);
+            $sheet->setCellValue('D' . $baris, $value->kategori_nama);
+            $baris++;
+            $no++;
+        }
+
+        // Set auto size untuk kolom
+        foreach (range('A', 'D') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        // Set title sheet
+        $sheet->setTitle('Data Kategori');
+
+        // Generate filename
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'Data_Kategori_' . date('Y-m-d H:i:s') . '.xlsx';
+
+        // Set header untuk download file
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+
+        $writer->save('php://output');
+        exit;
     }
 }
