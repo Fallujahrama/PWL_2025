@@ -86,6 +86,7 @@ Route::middleware(['auth'])->group(function () {
 
             Route::get('/import', [LevelController::class, 'import']); // ajax form upload excel
             Route::post('/import_ajax', [LevelController::class, 'import_ajax']); // AJAX import excel
+            Route::get('/export_excel', [LevelController::class, 'export_excel']); // ajax form export excel
         });
     });
 
