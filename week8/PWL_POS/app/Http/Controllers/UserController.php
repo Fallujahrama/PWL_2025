@@ -10,6 +10,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserController extends Controller
 {
@@ -349,62 +350,76 @@ class UserController extends Controller
     }
 
     public function export_excel()
-        {
-            // Ambil data users yang akan diekspor
-            $users = UserModel::select('user_id', 'username', 'nama', 'level_id')
-                ->orderBy('user_id')
-                ->with('level')
-                ->get();
+    {
+        // Ambil data users yang akan diekspor
+        $users = UserModel::select('user_id', 'username', 'nama', 'level_id')
+            ->orderBy('user_id')
+            ->with('level')
+            ->get();
 
-            // Load library PhpSpreadsheet
-            $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+        // Load library PhpSpreadsheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
-            // Set header kolom
-            $sheet->setCellValue('A1', 'No');
-            $sheet->setCellValue('B1', 'User ID');
-            $sheet->setCellValue('C1', 'Username');
-            $sheet->setCellValue('D1', 'Nama');
-            $sheet->setCellValue('E1', 'Level');
+        // Set header kolom
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'User ID');
+        $sheet->setCellValue('C1', 'Username');
+        $sheet->setCellValue('D1', 'Nama');
+        $sheet->setCellValue('E1', 'Level');
 
-            // Format header bold
-            $sheet->getStyle('A1:E1')->getFont()->setBold(true);
+        // Format header bold
+        $sheet->getStyle('A1:E1')->getFont()->setBold(true);
 
-            // Isi data users
-            $no = 1;
-            $baris = 2;
-            foreach ($users as $user) {
-                $sheet->setCellValue('A' . $baris, $no);
-                $sheet->setCellValue('B' . $baris, $user->user_id);
-                $sheet->setCellValue('C' . $baris, $user->username);
-                $sheet->setCellValue('D' . $baris, $user->nama);
-                $sheet->setCellValue('E' . $baris, $user->level->level_nama);
-                $baris++;
-                $no++;
-            }
-
-            // Set auto size untuk kolom
-            foreach (range('A', 'E') as $columnID) {
-                $sheet->getColumnDimension($columnID)->setAutoSize(true);
-            }
-
-            // Set title sheet
-            $sheet->setTitle('Data User');
-
-            // Generate filename
-            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-            $filename = 'Data_User_' . date('Y-m-d H:i:s') . '.xlsx';
-
-            // Set header untuk download file
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="' . $filename . '"');
-            header('Cache-Control: max-age=0');
-            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-            header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-            header('Cache-Control: cache, must-revalidate');
-            header('Pragma: public');
-
-            $writer->save('php://output');
-            exit;
+        // Isi data users
+        $no = 1;
+        $baris = 2;
+        foreach ($users as $user) {
+            $sheet->setCellValue('A' . $baris, $no);
+            $sheet->setCellValue('B' . $baris, $user->user_id);
+            $sheet->setCellValue('C' . $baris, $user->username);
+            $sheet->setCellValue('D' . $baris, $user->nama);
+            $sheet->setCellValue('E' . $baris, $user->level->level_nama);
+            $baris++;
+            $no++;
         }
+
+        // Set auto size untuk kolom
+        foreach (range('A', 'E') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        // Set title sheet
+        $sheet->setTitle('Data User');
+
+        // Generate filename
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'Data_User_' . date('Y-m-d H:i:s') . '.xlsx';
+
+        // Set header untuk download file
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+        $writer->save('php://output');
+        exit;
+    }
+
+    public function export_pdf()
+    {
+        $users = UserModel::select('user_id', 'username', 'nama', 'level_id')
+            ->orderBy('user_id')
+            ->with('level')
+            ->get();
+
+        $pdf = Pdf::loadView('user.export_pdf', ['user' => $users]);
+        $pdf->setPaper('a4', 'portrait'); // set ukuran kertas dan orientasi
+        $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
+        $pdf->render();
+        
+        return $pdf->stream('Data user ' . date('Y-m-d H:i:s') . '.pdf');
+    }
 }
