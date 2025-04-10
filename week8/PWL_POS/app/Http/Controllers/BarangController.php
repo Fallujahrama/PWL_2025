@@ -53,8 +53,9 @@ class BarangController extends Controller
         return DataTables::of($barangs)
             ->addIndexColumn() // Menambahkan kolom index otomatis
             ->addColumn('aksi', function ($barang) {
-                $btn  = '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/show_ajax').'\')" ';
-                $btn .= 'class="btn btn-info btn-sm">Detail</button> ';
+                // $btn  = '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/show_ajax').'\')" ';
+                // $btn .= 'class="btn btn-info btn-sm">Detail</button> ';
+                $btn = '<a href="' . url('/barang/' . $barang->barang_id) . '" class="btn btn-info btn-sm">Detail</a> ';
 
                 $btn .= '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/edit_ajax').'\')" ';
                 $btn .= 'class="btn btn-warning btn-sm">Edit</button> ';

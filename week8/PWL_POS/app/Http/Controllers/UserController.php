@@ -45,13 +45,13 @@ class UserController extends Controller
         return DataTables::of($users)
             ->addIndexColumn()
             ->addColumn('aksi', function ($user) {
-                // $btn = '<a href="' . url('/user/' . $user->user_id) . '" class="btn btn-info btn-sm">Detail</a> ';
+                $btn = '<a href="' . url('/user/' . $user->user_id) . '" class="btn btn-info btn-sm">Detail</a> ';
                 // $btn .= '<a href="' . url('/user/' . $user->user_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
                 // $btn .= '<form class="d-inline-block" method="POST" action="' . url('/user/' . $user->user_id) . '">'
                 //     . csrf_field() . method_field('DELETE') .
                 //     '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
-                $btn  = '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/show_ajax').'\')" ';
-                $btn .= 'class="btn btn-info btn-sm">Detail</button> ';
+                // $btn  = '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/show_ajax').'\')" ';
+                // $btn .= 'class="btn btn-info btn-sm">Detail</button> ';
 
                 $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/edit_ajax').'\')" ';
                 $btn .= 'class="btn btn-warning btn-sm">Edit</button> ';
@@ -480,7 +480,7 @@ class UserController extends Controller
             UserModel::where('user_id', $userId)->update([
                 'foto_profil' => $path
             ]);
-            
+
             return redirect()->back()->with('success', 'Foto profile berhasil diperbarui');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal mengupload foto: ' . $e->getMessage());

@@ -39,7 +39,7 @@
 
                 </table>
             @endempty
-            <a href="{{ url('barang') }}" class="btn btn-sm btn-default mt-2">Kembali</a>
+            <a href="{{ url('barang') }}" class="btn btn-danger btn-sm">Kembali</a>
         </div>
     </div>
 @endsection

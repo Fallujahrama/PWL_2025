@@ -29,7 +29,7 @@ Route::get('/register' , [AuthController::class, 'register']);
 Route::post('/register', [AuthController::class, 'postregister']);
 
 Route::middleware(['auth'])->group(function () {
-    
+
     Route::get('/', [WelcomeController::class, 'index']);
     Route::get('/profile', [UserController::class, 'profilePage']);
     Route::post('/user/editPhoto', [UserController::class, 'editPhoto']);
@@ -38,20 +38,20 @@ Route::middleware(['auth'])->group(function () {
     // artinya semua route di dalam group ini harus punya role ADM (Administrator)
     Route::middleware(['authorize:ADM'])->group(function(){
         Route::group(['prefix' => 'user'], function () {
-            Route::get('/', [UserController::class, 'index']); // menampilkan halaman awal Level
-            Route::post('/list', [UserController::class, 'list'])->name('user.list'); // menampilkan data Level dalam bentuk json untuk datatables
-            Route::get('/create', [UserController::class, 'create']); // menampilkan halaman form tambah Level
-            Route::post('/', [UserController::class, 'store']); // menyimpan data Level baru
+            Route::get('/', [UserController::class, 'index']); // menampilkan halaman awal user
+            Route::post('/list', [UserController::class, 'list'])->name('user.list'); // menampilkan data user dalam bentuk json untuk datatables
+            Route::get('/create', [UserController::class, 'create']); // menampilkan halaman form tambah user
+            Route::post('/', [UserController::class, 'store']); // menyimpan data user baru
 
-            Route::get('/create_ajax', [UserController::class, 'create_ajax']); // menampilkan halaman form tambah Level dengan ajax
+            Route::get('/create_ajax', [UserController::class, 'create_ajax']); // menampilkan halaman form tambah user dengan ajax
             Route::post('/ajax', [UserController::class, 'store_ajax']); // menyimpan data user baru ajax
 
-            Route::get('/{id}', [UserController::class, 'show']); // menampilkan detail Level
-            Route::get('/{id}/edit', [UserController::class, 'edit']); // menampilkan halaman form edit Level
-            Route::put('/{id}', [UserController::class, 'update']); // menyimpan perubahan data Level
+            Route::get('/{id}', [UserController::class, 'show']); // menampilkan detail user
+            Route::get('/{id}/edit', [UserController::class, 'edit']); // menampilkan halaman form edit user
+            Route::put('/{id}', [UserController::class, 'update']); // menyimpan perubahan data user
 
-            Route::get('/{id}/edit_ajax', [UserController::class, 'edit_ajax']); // menampilkan halaman form edit Level dengan ajax
-            Route::put('/{id}/update_ajax', [UserController::class, 'update_ajax']); // menyimpan perubahan data Level dengan ajax
+            Route::get('/{id}/edit_ajax', [UserController::class, 'edit_ajax']); // menampilkan halaman form edit user dengan ajax
+            Route::put('/{id}/update_ajax', [UserController::class, 'update_ajax']); // menyimpan perubahan data user dengan ajax
 
             Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']); // menghapus data user dengan ajax
             Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']); // menghapus data user dengan ajax

@@ -38,8 +38,9 @@ class KategoriController extends Controller
         return DataTables::of($kategoris)
             ->addIndexColumn() // Menambahkan kolom index otomatis
             ->addColumn('aksi', function ($kategori) {
-                $btn  = '<button onclick="modalAction(\''.url('/kategori/' . $kategori->kategori_id . '/show_ajax').'\')" ';
-                $btn .= 'class="btn btn-info btn-sm">Detail</button> ';
+                // $btn  = '<button onclick="modalAction(\''.url('/kategori/' . $kategori->kategori_id . '/show_ajax').'\')" ';
+                // $btn .= 'class="btn btn-info btn-sm">Detail</button> ';
+                $btn = '<a href="' . url('/kategori/' . $kategori->kategori_id) . '" class="btn btn-info btn-sm">Detail</a> ';
 
                 $btn .= '<button onclick="modalAction(\''.url('/kategori/' . $kategori->kategori_id . '/edit_ajax').'\')" ';
                 $btn .= 'class="btn btn-warning btn-sm">Edit</button> ';
@@ -390,7 +391,7 @@ class KategoriController extends Controller
         $pdf->setPaper('a4', 'portrait'); // set ukuran kertas dan orientasi
         $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
         $pdf->render();
-        
+
         return $pdf->stream('Data kategori ' . date('Y-m-d H:i:s') . '.pdf');
     }
 }

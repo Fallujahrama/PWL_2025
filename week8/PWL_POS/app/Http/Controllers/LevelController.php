@@ -37,8 +37,9 @@ class LevelController extends Controller
         return DataTables::of($levels)
             ->addIndexColumn() // Menambahkan kolom index otomatis
             ->addColumn('aksi', function ($level) {
-                $btn  = '<button onclick="modalAction(\''.url('/level/' . $level->level_id . '/show_ajax').'\')" ';
-                $btn .= 'class="btn btn-info btn-sm">Detail</button> ';
+                // $btn  = '<button onclick="modalAction(\''.url('/level/' . $level->level_id . '/show_ajax').'\')" ';
+                // $btn .= 'class="btn btn-info btn-sm">Detail</button> ';
+                $btn = '<a href="' . url('/level/' . $level->level_id) . '" class="btn btn-info btn-sm">Detail</a> ';
 
                 $btn .= '<button onclick="modalAction(\''.url('/level/' . $level->level_id . '/edit_ajax').'\')" ';
                 $btn .= 'class="btn btn-warning btn-sm">Edit</button> ';
