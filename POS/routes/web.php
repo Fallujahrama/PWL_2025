@@ -1,11 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\WelcomeController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PenjualanController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 
 
@@ -20,28 +17,14 @@ use App\Http\Controllers\UserController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::pattern('id', '[0-9]+');
 
 // login
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('login', [LoginController::class, 'login'])->name('login');
+Route::post('login', [LoginController::class, 'postlogin']);
+Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
 
-Route::get('/', [HomeController::class, 'home']);
+Route::middleware(['auth'])->group(function () {
 
-Route::get('/products', [ProductController::class, 'index']);
-
-Route::prefix('category')->group(function () {
-    Route::get('/food-beverage', [ProductController::class, 'foodBeverage']);
-    Route::get('/beauty-health', [ProductController::class, 'beautyHealth']);
-    Route::get('/home-care', [ProductController::class, 'homeCare']);
-    Route::get('/baby-kid', [ProductController::class, 'babyKid']);
+    Route::get('/', [WelcomeController::class, 'index']);
 });
-
-// Route::get('/category/{category}', [ProductController::class, 'category']);
-
-Route::get('/user/{id}/name/{name}', [UserController::class, 'show']);
-
-Route::get('/penjualan', [PenjualanController::class, 'index']);
