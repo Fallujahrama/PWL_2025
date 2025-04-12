@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LevelController;
+use App\Http\Controllers\KategoriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,6 +88,35 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/import_ajax', [LevelController::class, 'import_ajax']); // AJAX import excel
             Route::get('/export_excel', [LevelController::class, 'export_excel']); // ajax form export excel
             Route::get('/export_pdf', [LevelController::class, 'export_pdf']); //export pdf
+        });
+    });
+
+    // kategori controller
+    Route::middleware(['authorize:ADM,MNG'])->group(function(){
+        Route::group(['prefix' => 'kategori'], function () {
+            Route::get('/', [KategoriController::class, 'index']); // menampilkan halaman awal Kategori
+            Route::post('/list', [KategoriController::class, 'list']); // menampilkan data Kategori dalam bentuk json untuk datatables
+            Route::get('/create', [KategoriController::class, 'create']); // menampilkan halaman form tambah Kategori
+            Route::post('/', [KategoriController::class, 'store']);  // menyimpan data Kategori baru
+
+            Route::get('/create_ajax', [KategoriController::class, 'create_ajax']); // menampilkan halaman form tambah kategori dengan ajax
+            Route::post('/ajax', [KategoriController::class, 'store_ajax']); // menyimpan data kategori baru ajax
+
+            Route::get('/{id}', [KategoriController::class, 'show']); // menampilkan detail Kategori
+            Route::get('/{id}/edit', [KategoriController::class, 'edit']); // menampilkan halaman form edit Kategori
+            Route::put('/{id}', [KategoriController::class, 'update']);  // menyimpan perubahan data Kategori
+
+            Route::get('/{id}/edit_ajax', [KategoriController::class, 'edit_ajax']); // menampilkan halaman form edit kategori dengan ajax
+            Route::put('/{id}/update_ajax', [KategoriController::class, 'update_ajax']); // menyimpan perubahan data kategori dengan ajax
+
+            Route::get('/{id}/delete_ajax', [KategoriController::class, 'confirm_ajax']); // menghapus data kategori dengan ajax
+            Route::delete('/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']); // menghapus data kategori dengan ajax
+            Route::delete('/{id}', [KategoriController::class, 'destroy']); // menghapus data kategori
+
+            Route::get('/import', [KategoriController::class, 'import']); // ajax form upload excel
+            Route::post('/import_ajax', [KategoriController::class, 'import_ajax']); // AJAX import excel
+            Route::get('/export_excel', [KategoriController::class, 'export_excel']); // ajax form export excel
+            Route::get('/export_pdf', [KategoriController::class, 'export_pdf']); //export pdf
         });
     });
 });
