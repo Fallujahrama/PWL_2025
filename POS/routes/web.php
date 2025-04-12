@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -154,6 +155,35 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/import_ajax', [BarangController::class, 'import_ajax']); // AJAX import excel
             Route::get('/export_excel', [BarangController::class, 'export_excel']); // ajax form export excel
             Route::get('/export_pdf', [BarangController::class, 'export_pdf']); //export pdf
+        });
+    });
+
+    // supplier controller
+    Route::middleware(['authorize:ADM,MNG'])->group(function(){
+        Route::group(['prefix' => 'supplier'], function () {
+            Route::get('/', [SupplierController::class, 'index']); // menampilkan halaman awal Supplier
+            Route::post('/list', [SupplierController::class, 'list']); // menampilkan data Supplier dalam bentuk json untuk datatables
+            Route::get('/create', [SupplierController::class, 'create']); // menampilkan halaman form tambah Supplier
+            Route::post('/', [SupplierController::class, 'store']);  // menyimpan data Supplier baru
+
+            Route::get('/create_ajax', [SupplierController::class, 'create_ajax']); // menampilkan halaman form tambah Supplier dengan ajax
+            Route::post('/ajax', [SupplierController::class, 'store_ajax']); // menyimpan data Supplier baru ajax
+
+            Route::get('/{id}', [SupplierController::class, 'show']); // menampilkan detail Supplier
+            Route::get('/{id}/edit', [SupplierController::class, 'edit']); // menampilkan halaman form edit Supplier
+            Route::put('/{id}', [SupplierController::class, 'update']);  // menyimpan perubahan data Supplier
+
+            Route::get('/{id}/edit_ajax', [SupplierController::class, 'edit_ajax']); // menampilkan halaman form edit Supplier dengan ajax
+            Route::put('/{id}/update_ajax', [SupplierController::class, 'update_ajax']); // menyimpan perubahan data Supplier dengan ajax
+
+            Route::get('/{id}/delete_ajax', [SupplierController::class, 'confirm_ajax']); // menghapus data Supplier dengan ajax
+            Route::delete('/{id}/delete_ajax', [SupplierController::class, 'delete_ajax']); // menghapus data Supplier dengan ajax
+            Route::delete('/{id}', [SupplierController::class, 'destroy']); // menghapus data Supplier
+
+            Route::get('/import', [SupplierController::class, 'import']); // ajax form upload excel
+            Route::post('/import_ajax', [SupplierController::class, 'import_ajax']); // AJAX import excel
+            Route::get('/export_excel', [SupplierController::class, 'export_excel']); // ajax form export excel
+            Route::get('/export_pdf', [SupplierController::class, 'export_pdf']); //export pdf
         });
     });
 });
