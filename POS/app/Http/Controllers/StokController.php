@@ -16,18 +16,24 @@ class StokController extends Controller
     // Menampilkan halaman utama stok
     public function index()
     {
-        $activeMenu = 'stok';
         $breadcrumb = (object) [
             'title' => 'Data Stok',
             'list' => ['Home', 'Stok']
         ];
+
+        $page = (object) [
+            'title' => 'Daftar Stok Barang'
+        ];
+
+        $activeMenu = 'stok';
 
         $barang = BarangModel::select('barang_id', 'barang_nama')->get();
 
         return view('stok.index', [
             'activeMenu' => $activeMenu,
             'breadcrumb' => $breadcrumb,
-            'barang' => $barang
+            'barang' => $barang,
+            'page' => $page
         ]);
     }
 
@@ -65,7 +71,7 @@ class StokController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    
+
     // Menampilkan form create dengan AJAX
     public function create_ajax()
     {
