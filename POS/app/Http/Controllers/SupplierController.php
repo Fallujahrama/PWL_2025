@@ -56,42 +56,6 @@ class SupplierController extends Controller
             ->make(true);
     }
 
-    public function create()
-    {
-        $breadcrumb = (object) [
-            'title' => 'Tambah Supplier',
-            'list' => ['Home', 'Supplier', 'Tambah']
-        ];
-
-        $page = (object) [
-            'title' => 'Tambah supplier baru'
-        ];
-
-        $activeMenu = 'supplier'; // Set menu yang sedang aktif
-
-        return view('supplier.create', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'activeMenu' => $activeMenu
-        ]);
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'supplier_kode' => 'required|string|min:3|unique:m_supplier,supplier_kode',
-            'supplier_nama' => 'required|string|max:100',
-        ]);
-
-        SupplierModel::create([
-            'supplier_kode' => $request->supplier_kode,
-            'supplier_nama' => $request->supplier_nama,
-            'supplier_alamat' => $request->supplier_alamat,
-        ]);
-
-        return redirect('/supplier')->with('success', 'Data supplier berhasil disimpan');
-    }
-
     public function show(string $id)
     {
         $supplier = SupplierModel::find($id);
@@ -113,64 +77,6 @@ class SupplierController extends Controller
             'supplier' => $supplier,
             'activeMenu' => $activeMenu
         ]);
-    }
-
-    public function edit(string $id)
-    {
-        $supplier = SupplierModel::find($id);
-
-        $breadcrumb = (object) [
-            'title' => 'Edit Supplier',
-            'list' => ['Home', 'Supplier', 'Edit']
-        ];
-
-        $page = (object) [
-            'title' => 'Edit supplier'
-        ];
-
-        $activeMenu = 'supplier'; // Set menu yang sedang aktif
-
-        return view('supplier.edit', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'supplier' => $supplier,
-            'activeMenu' => $activeMenu
-        ]);
-    }
-
-    public function update(Request $request, string $id)
-    {
-        $request->validate([
-            'supplier_kode' => ['required', 'string', 'min:3', 'unique:m_supplier,supplier_kode,' . $id . ',supplier_id'],
-            'supplier_nama' => 'required|string|max:100',
-            'supplier_alamat' => 'required|string',
-        ]);
-
-        $supplier = SupplierModel::find($id);
-
-        $supplier->update([
-            'supplier_kode' => $request->supplier_kode,
-            'supplier_nama' => $request->supplier_nama,
-            'supplier_alamat' => $request->supplier_alamat,
-        ]);
-
-        return redirect('/supplier')->with('success', 'Data supplier berhasil diubah');
-    }
-
-    public function destroy(string $id)
-    {
-        $check = SupplierModel::find($id);
-        if (!$check) {
-            return redirect('/supplier')->with('error', 'Data supplier tidak ditemukan');
-        }
-
-        try {
-            SupplierModel::destroy($id);
-
-            return redirect('/supplier')->with('success', 'Data supplier berhasil dihapus');
-        } catch (\Illuminate\Database\QueryException $e) {
-            return redirect('/supplier')->with('error', 'Data supplier gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini');
-        }
     }
 
     public function create_ajax()
