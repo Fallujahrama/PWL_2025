@@ -89,15 +89,7 @@
                 <!-- Total -->
                 <div class="alert alert-info mt-4 p-3">
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Catatan:</span>
-                                </div>
-                                <input type="text" class="form-control" placeholder="Opsional">
-                            </div>
-                        </div>
-                        <div class="col-md-6 text-right">
+                        <div class="col-md-6 text-left">
                             <h4 class="mb-0">Total: <span id="total" class="font-weight-bold">Rp 0</span></h4>
                         </div>
                     </div>

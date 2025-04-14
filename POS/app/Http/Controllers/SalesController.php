@@ -108,7 +108,7 @@ class SalesController extends Controller
         try {
             // Generate kode transaksi
             $lastId = SalesModel::max('penjualan_id') ?? 0;
-            $penjualan_kode = 'PNJ' . str_pad($lastId + 1, 4, '0', STR_PAD_LEFT);
+            $penjualan_kode = 'TRX' . str_pad($lastId + 1, 4, '0', STR_PAD_LEFT);
 
             // Simpan header transaksi
             $sale = SalesModel::create([
