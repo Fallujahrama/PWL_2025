@@ -9,6 +9,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StokController;
+use App\Http\Controllers\SalesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -206,6 +207,32 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/import_ajax', [StokController::class, 'import_ajax']);
             Route::get('/export_excel', [StokController::class, 'export_excel']);
             Route::get('/export_pdf', [StokController::class, 'export_pdf']);
+        });
+    });
+
+    // Route untuk semua role (ADM, MNG, STF) - Hanya View
+    Route::middleware(['authorize:ADM,MNG,STF'])->group(function () {
+        Route::group(['prefix' => 'penjualan'], function () {
+            Route::get('/', [SalesController::class, 'index'])->name('penjualan.index'); // Beri nama
+            Route::post('/list', [SalesController::class, 'list'])->name('penjualan.list'); // <-- INI YANG DITAMBAH
+            Route::get('/{id}', [SalesController::class, 'show'])->name('penjualan.show');
+        });
+    });
+
+    // Route khusus Admin & Staff/Kasir (ADM, STF) - CRUD
+    Route::middleware(['authorize:ADM,STF'])->group(function () {
+        Route::group(['prefix' => 'penjualan'], function () {
+            // Create
+            Route::get('/create_ajax', [SalesController::class, 'create_ajax'])->name('penjualan.create_ajax');
+            Route::post('/ajax', [SalesController::class, 'store_ajax'])->name('penjualan.store_ajax');
+
+            // Update
+            Route::get('/{id}/edit_ajax', [SalesController::class, 'edit_ajax'])->name('penjualan.edit_ajax');
+            Route::put('/{id}/update_ajax', [SalesController::class, 'update_ajax'])->name('penjualan.update_ajax');
+
+            // Delete
+            Route::get('/{id}/delete_ajax', [SalesController::class, 'confirm_ajax'])->name('penjualan.confirm_ajax');
+            Route::delete('/{id}/delete_ajax', [SalesController::class, 'delete_ajax'])->name('penjualan.delete_ajax');
         });
     });
 });
