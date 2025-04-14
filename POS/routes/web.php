@@ -202,9 +202,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{id}/delete_ajax', [StokController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [StokController::class, 'delete_ajax']);
 
-            // Import & Export
-            Route::get('/import', [StokController::class, 'import']);
-            Route::post('/import_ajax', [StokController::class, 'import_ajax']);
+            // Export
             Route::get('/export_excel', [StokController::class, 'export_excel']);
             Route::get('/export_pdf', [StokController::class, 'export_pdf']);
         });

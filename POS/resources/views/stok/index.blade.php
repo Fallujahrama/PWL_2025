@@ -5,7 +5,6 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <button onclick="modalAction('{{ url('/stok/import') }}')" class="btn btn-info"> Import Stok</button>
                 <a href="{{ url('/stok/export_excel') }}" class="btn btn-primary"><i class="fa fa-file-excel"></i> Export Excel</a>
                 <button onclick="modalAction('{{ url('/stok/create_ajax') }}')" class="btn btn-success"> Tambah Data (Ajax)</button>
                 <a href="{{ url('/stok/export_pdf') }}" class="btn btn-warning"><i class="fa fa-file-pdf"></i> Export PDF</a>
